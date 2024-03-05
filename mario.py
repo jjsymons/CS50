@@ -1,3 +1,5 @@
+# Code begins line 57
+
 """
 In a file called mario.py in a folder called sentimental-mario-more, write a program that recreates a 
 half-pyramid using hashes (#) for blocks, exactly as you did in Problem Set 1. Your program this time 
@@ -52,24 +54,35 @@ How to Test
   Your program should reject this input as invalid, as by re-prompting the user to type in another number.
 """
 
-
 def main():
+    # While loop to ask for correct input repeatedly until given
     while True:
-        height = int(input("Height: "))
-        if height > 0 and height <= 9:
-            break
+        # Try block to handle exceptions
+        try:
+          height = int(input("Height: "))
+          # Checks that value is between expected parameters, breaks if met to continue program 
+          if height > 0 and height <= 8:
+              break
+        # Exception to handle non-integer inputs such as strings
+        except:
+            print("Error: Please input an integer of 1-8")
+            pass
 
-
-    hash = 1
-    space = height - hash
+    # hash must always be set to 1 to begin the loop no matter the size
+    hashes = 1
+    # space is set as height - hash so that the correct amount of spaces can be displayed. 
+    # If height is 1 then spaces is zero and will not be output, if height is 8, then spaces is 7.
+    spaces = height - hashes
 
     for i in range(height):
-        print(space * " ", end="")
-        print(hash * "#", end="  ")
-        print(hash * "#")
-        hash += 1
-        space -= 1
+        # Spaces are set first, new line is ignored. Spaces multiplies a " " to give correct amount, if 0 nothing is produced
+        print(spaces * " ", end="")
+        # Hashes is then displayed, with a tab to seperate the next set of hashes
+        print(hashes * "#", end="  ")
+        # Final hashes set for the right step
+        print(hashes * "#")
+        # Iterates over hash and space variables, adding additional hashes and reducing spaces for next line
+        hashes += 1
+        spaces -= 1
         
-    
-
 main()
