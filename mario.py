@@ -52,3 +52,24 @@ How to Test
   Your program should reject this input as invalid, as by re-prompting the user to type in another number.
 """
 
+
+def main():
+    while True:
+        height = int(input("Height: "))
+        if height > 0 and height <= 9:
+            break
+
+
+    hash = 1
+    space = height - hash
+
+    for i in range(height):
+        print(space * " ", end="")
+        print(hash * "#", end="  ")
+        print(hash * "#")
+        hash += 1
+        space -= 1
+        
+    
+
+main()
