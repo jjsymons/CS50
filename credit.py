@@ -58,7 +58,7 @@ number, exactly as you did in Problem Set 1. Your program this time should be wr
         13 + 4 + 0 + 0 + 0 + 0 + 0 + 3 + 0 = 20
 
         Yup, the last digit in that sum (20) is a 0, so David's card is legit!
-        
+
         So, validating credit card numbers isn't hard, but it does get a bit tedious by hand. Let's write a program.
 
 
@@ -95,17 +95,67 @@ the following.
 
 import re
 
-
 def main():
     while True:
         try:
             credit_card_no = input("Please give me a credit card number to assess: ")
-            if re.match(r"^\d{15}", credit_card_no):
+            if re.match(r"^(?!.{14}$)[0-9]{13}|[0-9]{15,16}$", credit_card_no): 
                 break
         except:
             print("Please input the 15 number credit card: ")
             pass
+    second_to_last_digit = credit_card_no[-2::-2]
+    last_digit = credit_card_no[::-2]
+
+
+    total = 0
+
+    if re.match(r"^3[4-7][0-9]*$", credit_card_no):
+        print("American Express")
+    elif re.match(r"^4[0-9]*$", credit_card_no):
+        print("Visa")
+    elif re.match(r"^5[1-5][0-9]*$", credit_card_no):
+        print("Master Card")
+    elif re.match(r"^4[0-9]*$", credit_card_no):
+        print("Visa")
+    else:
+        print("Invalid")
+        exit()
+
+    for digit in second_to_last_digit:
+        temp = 0
+        if int(digit) * 2 > 9:
+            string = int(digit) * 2
+            temp = str(string)
+            total += int(temp[0]) + int(temp[1]) 
+
+        else:
+            total += int(digit) * 2
+
+    for digit in last_digit:
+        total += int(digit)
     
+    if str(total)[-1] == "0":
+        print("Valid")
+    else:
+        print("Invalid")
+    
+
+    # 4003600000000014
+    """378282246310005 and press enter. 
+    Your program should output AMEX.
+    371449635398431 and press enter. 
+    Your program should output AMEX.
+    5555555555554444 and press enter. 
+    Your program should output MASTERCARD.
+    5105105105105100 and press enter. 
+    Your program should output MASTERCARD.
+    4111111111111111 and press enter. 
+    Your program should output VISA.
+    4012888888881881 and press enter. 
+    Your program should output VISA.
+    1234567890 and press enter. 
+    Your program should output INVALID."""
 
 
     
