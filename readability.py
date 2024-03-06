@@ -71,31 +71,42 @@ import re
 
 def main():
 
+    # Takes input from the user, also replaces all speech marks, because they were being identified as seperate 
+    #   sentences for example in the use of the Alice in wonderland text the final " after the ? made a new 
+    #   sentence this reduced the overall grade.
     text = input("Text: ")
     text = text.replace("\"", "")
 
+    # Regular expression splits the entire text into the amount of sentences based on ".", "?", "!", len of 
+    #   sentences is taken.
     sentences = re.split(r'[.?!]', text)
+    # Removes any potential accidental additional sentences that are empty
     if sentences[-1] == "":
         sentences.pop()
     sentences = len(sentences)
     
+    # Letters variable to calculate how many alphabetical chars are in the entire text
     letters = 0
 
     for i in text:
         if i.isalpha():
             letters += 1
     
+    # Words is calculated as anything with a space between it. for example, 
+    #   "Hello, World!" is split as ["Hello,", "World!"]
     words = len(text.split(' '))
 
 
-    # Coleman index
-
+    # Coleman-Liau see line 19- 29
+    # Calculates average number of Letters and numbers per 100 words
     L = (letters/words) * 100
     S = (sentences/words) * 100
 
+    # Coleman-Liau calculation rounded
     index = round(0.0588 * L - 0.296 * S - 15.8)
     print(index)
 
+    # If Else statement to return the correct output
     if index < 1:
         return "Before Grade 1"
     elif index < 16:
