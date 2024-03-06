@@ -96,41 +96,54 @@ the following.
 import re
 
 def main():
+    # While loop to get correct inputs
     while True:
         credit_card_no = input("Please give me a credit card number to assess: ")
+        # Regular expression catches as per instructions, any length of digits that is not, 13, 15, 16 in length
         if re.match(r"^(?!.{14}$)[0-9]{13}|[0-9]{15,16}$", credit_card_no): 
             break
+        # If incorrect input then message is printed to user and loop repeats
         print("ERROR: input a credit card number of 13, 15 or 16 digits")
     
+    # Two variables are used with specific names for their intention These variables count backwards from the 
+    #   end of the string and step over 1 char as per Luhm's algorithm (line 31-62)
     second_to_last_digit = credit_card_no[-2::-2]
     last_digit = credit_card_no[::-2]
-
+    
     output = ''
 
+    # Regular expressions then look at the beginning of the inputed credit card no. Depending on how they begin
+    #   determines what Company they belong too. See lines 18-21. If valid then result is saved in output
     if re.match(r"^3[4-7][0-9]*$", credit_card_no):
         output = "AMEX"
     elif re.match(r"^4[0-9]*$", credit_card_no):
         output = "VISA"
     elif re.match(r"^5[1-5][0-9]*$", credit_card_no):
         output = "MASTERCARD"
+    # If they do not match any of the above companies then it must be invalid
     else:
-        print("Invalid")
-        exit()
+        return "Invalid"
 
     total = 0
 
+    # First for loop goes through the second to last digit list, which per Luhm's algorithm must be multiplied by
+    #   2, then added to a total. If the reult is larger than 9, then the numbers must be split, 12, becomes 1+2.
+    #   Therefore the output is saved as a string in temp, then split and turned into numbers and added to the total. 
     for digit in second_to_last_digit:
-        temp = 0
+        temp = ''
         if int(digit) * 2 > 9:
             temp = str(int(digit) * 2)
             total += int(temp[0]) + int(temp[1]) 
-
         else:
             total += int(digit) * 2
 
+    # Second loop just adds the numbers from the last digit to the total
     for digit in last_digit:
         total += int(digit)
     
+    # According to luhm, if the resulting number ends with a 0, like 20, 30 etc, then the credit card number is 
+    #   legitimate, and returns the correct credit card company the number belongs to that was sorted earlier. 
+    #   Otherwise return Invalid.
     if str(total)[-1] == "0":
         return output
     else:
