@@ -1,8 +1,8 @@
 """    
     Problem to Solve
-In a filed called credit.py in a folder called sentimental-credit, write a program that prompts the user for a 
-credit card number and then reports (via print) whether it is a valid American Express, MasterCard, or Visa card 
-number, exactly as you did in Problem Set 1. Your program this time should be written in Python!
+In a file called credit.py, write a program that prompts the user for a credit card number and then reports (via 
+print) whether it is a valid American Express, MasterCard, or Visa card number, exactly as you did in Problem Set 1. 
+Your program this time should be written in Python!
 
         Problem set 1:
 
@@ -97,36 +97,32 @@ import re
 
 def main():
     while True:
-        try:
-            credit_card_no = input("Please give me a credit card number to assess: ")
-            if re.match(r"^(?!.{14}$)[0-9]{13}|[0-9]{15,16}$", credit_card_no): 
-                break
-        except:
-            print("Please input the 15 number credit card: ")
-            pass
+        credit_card_no = input("Please give me a credit card number to assess: ")
+        if re.match(r"^(?!.{14}$)[0-9]{13}|[0-9]{15,16}$", credit_card_no): 
+            break
+        print("ERROR: input a credit card number of 13, 15 or 16 digits")
+    
     second_to_last_digit = credit_card_no[-2::-2]
     last_digit = credit_card_no[::-2]
 
-
-    total = 0
+    output = ''
 
     if re.match(r"^3[4-7][0-9]*$", credit_card_no):
-        print("American Express")
+        output = "AMEX"
     elif re.match(r"^4[0-9]*$", credit_card_no):
-        print("Visa")
+        output = "VISA"
     elif re.match(r"^5[1-5][0-9]*$", credit_card_no):
-        print("Master Card")
-    elif re.match(r"^4[0-9]*$", credit_card_no):
-        print("Visa")
+        output = "MASTERCARD"
     else:
         print("Invalid")
         exit()
 
+    total = 0
+
     for digit in second_to_last_digit:
         temp = 0
         if int(digit) * 2 > 9:
-            string = int(digit) * 2
-            temp = str(string)
+            temp = str(int(digit) * 2)
             total += int(temp[0]) + int(temp[1]) 
 
         else:
@@ -136,29 +132,8 @@ def main():
         total += int(digit)
     
     if str(total)[-1] == "0":
-        print("Valid")
+        return output
     else:
-        print("Invalid")
+        return "Invalid"
     
-
-    # 4003600000000014
-    """378282246310005 and press enter. 
-    Your program should output AMEX.
-    371449635398431 and press enter. 
-    Your program should output AMEX.
-    5555555555554444 and press enter. 
-    Your program should output MASTERCARD.
-    5105105105105100 and press enter. 
-    Your program should output MASTERCARD.
-    4111111111111111 and press enter. 
-    Your program should output VISA.
-    4012888888881881 and press enter. 
-    Your program should output VISA.
-    1234567890 and press enter. 
-    Your program should output INVALID."""
-
-
-    
-
-
-main()
+print(main())
