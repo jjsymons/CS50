@@ -66,6 +66,7 @@ Your program should open the CSV file and read its contents into memory.
     name and the remaining columns will be the STR sequences themselves.
 
 Your program should open the DNA sequence and read its contents into memory.
+
 For each of the STRs (from the first line of the CSV file), your program should compute the longest run of 
 consecutive repeats of the STR in the DNA sequence to identify. Notice that we've defined a helper function for you,
 longest_match, which will do just that!
@@ -80,15 +81,47 @@ of the matching individual.
 
 import csv
 import sys
+import re
 
 
 def main():
 
-    print(sys.argv[0])
+    # TODO: Check for command-line usage
+    while True:
+        try:
+            if len(sys.argv) == 3:
+                break
+            else:
+                exit()
+            
+        except:
+            print("Error 1")
+            exit()
+
+    # First If
+    if re.findall(r".csv$", sys.argv[1]) and re.findall(r".txt$", sys.argv[2]):
+        print("First If SUCCESS")
+    else:
+        print("Error 2")
+        exit()
+
+    with open(sys.argv[1]) as file:
+        reader = csv.DictReader(file)
+        print(reader.fieldnames)
+    
+    rows = []
 
     # TODO: Read database file into a variable
+    with open(sys.argv[1]) as file:
+        database_reader = csv.DictReader(file)
+        file.close()
+        print(database_reader.fieldnames)
     
     # TODO: Read DNA sequence file into a variable
+    with open(sys.argv[2]) as file:
+        sequence_reader = csv.DictReader(file)
+        file.close()
+        print(sequence_reader.fieldnames)    
 
     # TODO: Find longest match of each STR in DNA sequence
 
