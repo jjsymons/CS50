@@ -89,7 +89,8 @@ def main():
     # TODO: Check for command-line usage
     while True:
         try:
-            if len(sys.argv) == 3:
+            # Checks correct length of input has been taken
+            if len(sys.argv) == 3 and re.findall(r".csv$", sys.argv[1]) and re.findall(r".txt$", sys.argv[2]):
                 break
             else:
                 exit()
@@ -97,33 +98,33 @@ def main():
         except:
             print("Error 1")
             exit()
-
-    # First If
-    if re.findall(r".csv$", sys.argv[1]) and re.findall(r".txt$", sys.argv[2]):
-        print("First If SUCCESS")
-    else:
-        print("Error 2")
-        exit()
-
-    with open(sys.argv[1]) as file:
-        reader = csv.DictReader(file)
-        print(reader.fieldnames)
     
     rows = []
 
     # TODO: Read database file into a variable
     with open(sys.argv[1]) as file:
         database_reader = csv.DictReader(file)
-        file.close()
         print(database_reader.fieldnames)
+        file.close()
     
     # TODO: Read DNA sequence file into a variable
     with open(sys.argv[2]) as file:
-        sequence_reader = csv.DictReader(file)
-        file.close()
-        print(sequence_reader.fieldnames)    
+        sequence_string = file.readline()
+        file.close()    
+        print(sequence_string)
 
     # TODO: Find longest match of each STR in DNA sequence
+    x = 0
+    list_of_sequence = []
+    for i in sequence_string:
+        if x + 4 > len(sequence_string):
+            break
+        else:
+            list_of_sequence.append(sequence_string[x:x+4])
+            x+=4
+    print(list_of_sequence)
+        
+
 
     # TODO: Check database for matching profiles
 
