@@ -104,25 +104,20 @@ def main():
     # TODO: Read database file into a variable
     with open(sys.argv[1]) as file:
         database_reader = csv.DictReader(file)
-        print(database_reader.fieldnames)
+        check_against = database_reader.fieldnames[1:]
         file.close()
     
     # TODO: Read DNA sequence file into a variable
     with open(sys.argv[2]) as file:
         sequence_string = file.readline()
         file.close()    
-        print(sequence_string)
 
     # TODO: Find longest match of each STR in DNA sequence
-    x = 0
-    list_of_sequence = []
-    for i in sequence_string:
-        if x + 4 > len(sequence_string):
-            break
-        else:
-            list_of_sequence.append(sequence_string[x:x+4])
-            x+=4
-    print(list_of_sequence)
+    list_of_sequence = {}
+    for i in check_against:
+        all_instances = re.findall(i, sequence_string)
+        list_of_sequence.update({i: len(all_instances)})
+    
         
 
 
