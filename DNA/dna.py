@@ -105,6 +105,10 @@ def main():
     with open(sys.argv[1]) as file:
         database_reader = csv.DictReader(file)
         check_against = database_reader.fieldnames[1:]
+        data = csv.reader(file)
+        i = 0
+        for row in data:
+            rows.append([row[0],row[1:]])
         file.close()
     
     # TODO: Read DNA sequence file into a variable
@@ -113,15 +117,21 @@ def main():
         file.close()    
 
     # TODO: Find longest match of each STR in DNA sequence
-    list_of_sequence = {}
+    list_of_sequence = []
     for i in check_against:
         all_instances = re.findall(i, sequence_string)
-        list_of_sequence.update({i: len(all_instances)})
-    
-        
+        list_of_sequence.append(str(len(all_instances)))
+
 
 
     # TODO: Check database for matching profiles
+    i = 0
+    for row in rows:
+        if row[1] == list_of_sequence[i]:
+            print("Yes")
+        else:
+            print("No")
+            i+=1
 
     return
 
