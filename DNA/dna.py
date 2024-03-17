@@ -103,6 +103,7 @@ def main():
     with open(sys.argv[1]) as file:
         database_reader = csv.DictReader(file)
         check_against = database_reader.fieldnames[1:]
+        no_of_fields = len(check_against) - 1
         data = csv.reader(file)
         i = 0
         for row in data:
@@ -127,12 +128,10 @@ def main():
         for items in row[1]:
             if items == list_of_sequence[i]:
                 true_list.append(True)
-                if i == 2:
-                    print(items, list_of_sequence[i])
-                    print("Complete")
+                if i == no_of_fields:
                     print(row)
+                    print(row[0], row[1])
                     return
-                print(items, list_of_sequence[i])
                 i += 1
             else:
                 i = 0
