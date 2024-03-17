@@ -79,9 +79,7 @@ of the matching individual.
     match.
 """
 
-import csv
-import sys
-import re
+import csv, sys, re
 
 
 def main():
@@ -122,16 +120,24 @@ def main():
         all_instances = re.findall(i, sequence_string)
         list_of_sequence.append(str(len(all_instances)))
 
-
-
     # TODO: Check database for matching profiles
-    i = 0
+    true_list = []
     for row in rows:
-        if row[1] == list_of_sequence[i]:
-            print("Yes")
-        else:
-            print("No")
-            i+=1
+        i = 0
+        for items in row[1]:
+            if items == list_of_sequence[i]:
+                true_list.append(True)
+                if i == 2:
+                    print(items, list_of_sequence[i])
+                    print("Complete")
+                    print(row)
+                    return
+                print(items, list_of_sequence[i])
+                i += 1
+            else:
+                i = 0
+                true_list = []
+                pass
 
     return
 
