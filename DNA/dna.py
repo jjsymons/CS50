@@ -117,28 +117,25 @@ def main():
 
     # TODO: Find longest match of each STR in DNA sequence
     list_of_sequence = []
-    for i in check_against:
-        all_instances = re.findall(i, sequence_string)
-        list_of_sequence.append(str(len(all_instances)))
+    for sequence in check_against:
+        all_instances = longest_match(sequence_string, sequence)
+        list_of_sequence.append(all_instances)
 
     # TODO: Check database for matching profiles
     true_list = []
     for row in rows:
         i = 0
         for items in row[1]:
-            if items == list_of_sequence[i]:
+            if int(items) == list_of_sequence[i]:
                 true_list.append(True)
                 if i == no_of_fields:
-                    print(row)
-                    print(row[0], row[1])
-                    return
+                    return row[0]
                 i += 1
             else:
                 i = 0
                 true_list = []
                 pass
-
-    return
+    return "No Match"
 
 
 def longest_match(sequence, subsequence):
@@ -179,4 +176,4 @@ def longest_match(sequence, subsequence):
     return longest_run
 
 
-main()
+print(main())
