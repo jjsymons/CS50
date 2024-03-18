@@ -83,52 +83,61 @@ import csv, sys, re
 
 
 def main():
-
     # TODO: Check for command-line usage
+    # While True loop to check for correct inputs
     while True:
         try:
-            # Checks correct length of input has been taken
+            # Checks correct length of input has been taken and correct file types 
             if len(sys.argv) == 3 and re.findall(r".csv$", sys.argv[1]) and re.findall(r".txt$", sys.argv[2]):
                 break
             else:
-                exit()
-            
+                raise Exception
         except:
-            print("Error 1")
+            # Displays error if the correct length and file types not given and gives message
+            print("Error: 1. Incorrect number of Command line arguments, or incorrect arguments given.")
             exit()
-    
-    rows = []
+
 
     # TODO: Read database file into a variable
+    # After correct input given, the csv file is opened and read into a list varible called rows
+    rows = []
     with open(sys.argv[1]) as file:
         database_reader = csv.DictReader(file)
-        check_against = database_reader.fieldnames[1:]
-        no_of_fields = len(check_against) - 1
+        field_names = database_reader.fieldnames[1:]
+        no_of_fieldnames = len(field_names) - 1
         data = csv.reader(file)
-        i = 0
         for row in data:
             rows.append([row[0],row[1:]])
         file.close()
     
+
     # TODO: Read DNA sequence file into a variable
+    # Reads txt file and saves to a variable
     with open(sys.argv[2]) as file:
         sequence_string = file.readline()
         file.close()    
 
+
     # TODO: Find longest match of each STR in DNA sequence
-    list_of_sequence = []
-    for sequence in check_against:
-        all_instances = longest_match(sequence_string, sequence)
-        list_of_sequence.append(all_instances)
+    # Using pre-defined function 'longest_match' below, finds the longest sequence of each fieldname from the 
+    #   database that is being gathered.
+    longest_sequence = []
+    for sequence in field_names:
+        longest_sequence.append(longest_match(sequence_string, sequence))
+
 
     # TODO: Check database for matching profiles
+    # Cycles through database matching with the longest_sequence list, each time the longest_sequence and the 
+    #   database match a True is added to a list, once that list is the length of the number of field_names being
+    #   checked then it exits, if wrong, it empties the string and begins searching again. If no match found then
+    #   returns No match
     true_list = []
     for row in rows:
         i = 0
         for items in row[1]:
-            if int(items) == list_of_sequence[i]:
+            if int(items) == longest_sequence[i]:
                 true_list.append(True)
-                if i == no_of_fields:
+                if i == no_of_fieldnames:
                     return row[0]
                 i += 1
             else:
@@ -174,6 +183,5 @@ def longest_match(sequence, subsequence):
 
     # After checking for runs at each character in seqeuence, return longest run found
     return longest_run
-
 
 print(main())
